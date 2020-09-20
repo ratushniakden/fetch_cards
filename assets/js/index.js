@@ -42,7 +42,6 @@ function randomProfession() {
     "Electrician",
     "Park ranger",
   ];
-
   const random = Math.floor(Math.random() * prof.length);
   return prof[random];
 }

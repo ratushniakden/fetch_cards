@@ -5,8 +5,11 @@ html {
 ul {
   display: flex;
   flex-wrap: wrap;
-  flex-grow: 1;
-  flex-shrink: 1s;
+}
+
+li {
+  display: flex;
+  margin: 20px;
 }
 
 img {
@@ -54,7 +57,7 @@ button:hover {
   display: flex;
   align-items: center;
   flex-direction: column;
-  max-width: 350px;
+  min-width: 350px;
   min-height: 400px;
   border-radius: 10px;
   box-shadow: 0px 0px 19px -5px rgba(0, 0, 0, 0.75);
