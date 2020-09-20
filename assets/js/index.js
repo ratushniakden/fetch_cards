@@ -5,49 +5,51 @@ fetch("/users.json")
   .then((users) => {
     const ul = document.getElementById("ul");
 
-    const usersList = users.map((user) => {
-      if (user.id < 100) {
-        const liOptions = {
-          className: "userCardContainer",
-        };
-
-        const imgOptions = {
-          src: user.profilePicture ?? "/assets/image/defaultUser.png",
-        };
-
-        const headingOptions = {
-          tagName: "h1",
-          textContent: `${user.firstName} ${user.lastName}`,
-        };
-
-        const paragraphOptions = {
-          textContent: randomProfession(),
-        };
-
-        const buttonOptions = {
-          textContent: "Connect",
-        };
-
-        const li = createLi(liOptions);
-        const img = createImage(imgOptions);
-        const h1 = createHeading(headingOptions);
-        const p = createParagraph(paragraphOptions);
-        const button = createButton(buttonOptions);
-
-        li.append(img, h1, p, button);
-
-        return li;
-      } else {
-        return null;
-      }
-    });
+    const usersList = users.map((user) => createUserCard(user));
     ul.append(
       ...usersList.filter(function (e) {
-        return e != null;
+        return e !== null;
       })
     );
   })
   .catch(console.error);
+
+function createUserCard(user) {
+  if (user.id < 100) {
+    const liOptions = {
+      className: "userCardContainer",
+    };
+
+    const imgOptions = {
+      src: user.profilePicture ?? "/assets/image/defaultUser.png",
+    };
+
+    const headingOptions = {
+      tagName: "h1",
+      textContent: `${user.firstName} ${user.lastName}`,
+    };
+
+    const paragraphOptions = {
+      textContent: randomProfession(),
+    };
+
+    const buttonOptions = {
+      textContent: "Connect",
+    };
+
+    const li = createLi(liOptions);
+    const img = createImage(imgOptions);
+    const h1 = createHeading(headingOptions);
+    const p = createParagraph(paragraphOptions);
+    const button = createButton(buttonOptions);
+
+    li.append(img, h1, p, button);
+
+    return li;
+  } else {
+    return null;
+  }
+}
 
 function createLi({ className = "li" } = options) {
   const li = document.createElement("li");
