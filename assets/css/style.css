@@ -1,5 +1,6 @@
 html {
   font-size: 16px;
+  background-color: #f0f1f6;
 }
 
 ul {
@@ -9,15 +10,26 @@ ul {
 
 li {
   margin: 20px;
+  transition: transform 0.2s;
+}
+
+li:hover {
+  transform: scale(1.1);
 }
 
 img {
+  position: relative;
   display: flex;
   margin: 60px 0px 20px 0px;
   width: 115px;
   height: 115px;
   object-fit: cover;
   border-radius: 50%;
+  box-shadow: 0px 5px 19px -8px rgba(0, 0, 0, 0.75);
+}
+
+.testOne {
+  position: absolute;
 }
 
 h1 {
@@ -52,7 +64,6 @@ button:hover {
 }
 
 .userCardContainer {
-  background-color: white;
   display: flex;
   align-items: center;
   flex-direction: column;
@@ -60,4 +71,8 @@ button:hover {
   min-height: 400px;
   border-radius: 10px;
   box-shadow: 0px 0px 19px -5px rgba(0, 0, 0, 0.75);
+}
+
+.userCardContainer:hover {
+  background-color: white;
 }

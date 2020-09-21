@@ -4,7 +4,6 @@ fetch("/users.json")
   .then((resp) => resp.json())
   .then((users) => {
     const ul = document.getElementById("ul");
-
     const usersList = users.map((user) => createUserCard(user));
     ul.append(
       ...usersList.filter(function (e) {
@@ -42,6 +41,13 @@ function createUserCard(user) {
     const h1 = createHeading(headingOptions);
     const p = createParagraph(paragraphOptions);
     const button = createButton(buttonOptions);
+
+    img.addEventListener("error", () => {
+      const span = document.createElement("span");
+      span.classList.add("testOne");
+      span.textContent = "TEST";
+      img.append(span);
+    });
 
     li.append(img, h1, p, button);
 
