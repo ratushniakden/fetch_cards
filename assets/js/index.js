@@ -43,10 +43,8 @@ function createUserCard(user) {
     const button = createButton(buttonOptions);
 
     img.addEventListener("error", () => {
-      const span = document.createElement("span");
-      span.classList.add("testOne");
-      span.textContent = "TEST";
-      img.append(span);
+      img.parentNode.prepend(imageErrorHandler(user));
+      img.parentNode.removeChild(img);
     });
 
     li.append(img, h1, p, button);
@@ -65,6 +63,7 @@ function createLi({ className = "li" } = options) {
 
 function createImage({ src = "/assets/image/defaultUser.png" } = options) {
   const img = document.createElement("img");
+  img.classList.add("avatarImage");
   img.src = src;
   return img;
 }
@@ -90,6 +89,16 @@ function createButton({ textContent = "More" } = options) {
   return btn;
 }
 
+function imageErrorHandler(user) {
+  const div = document.createElement("div");
+  const span = document.createElement("span");
+  div.style.backgroundColor = "#" + randomBgColor();
+  span.textContent = `${user.firstName[0]}${user.lastName[0]}`;
+  div.classList.add("avatarImage", "avatarBackground");
+  div.append(span);
+  return div;
+}
+
 function randomProfession() {
   let prof = [
     "Brewer",
@@ -105,4 +114,9 @@ function randomProfession() {
   ];
   const random = Math.floor(Math.random() * prof.length);
   return prof[random];
+}
+
+function randomBgColor() {
+  const randomColor = Math.floor(Math.random() * 16777215).toString(16);
+  return randomColor;
 }
