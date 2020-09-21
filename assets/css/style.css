@@ -54,6 +54,7 @@ p {
 button {
   border-radius: 5px;
   border: 2px solid grey;
+  outline: none;
   background: transparent;
   font-size: 1rem;
   font-weight: bold;
