@@ -14,45 +14,44 @@ fetch("/users.json")
   .catch(console.error);
 
 function createUserCard(user) {
-  if (user.id < 100) {
-    const liOptions = {
-      className: "userCardContainer",
-    };
+  const liOptions = {
+    className: "userCardContainer",
+  };
 
-    const imgOptions = {
-      src: user.profilePicture ?? "/assets/image/defaultUser.png",
-    };
+  const imgOptions = {
+    src: user.profilePicture ?? "/assets/image/defaultUser.png",
+  };
 
-    const headingOptions = {
-      tagName: "h1",
-      textContent: `${user.firstName} ${user.lastName}`,
-    };
+  const headingOptions = {
+    tagName: "h1",
+    textContent: `${user.firstName} ${user.lastName}`,
+  };
 
-    const paragraphOptions = {
-      textContent: randomProfession(),
-    };
+  const paragraphOptions = {
+    textContent: randomProfession(),
+  };
 
-    const buttonOptions = {
-      textContent: "Connect",
-    };
+  const buttonOptions = {
+    textContent: "Connect",
+  };
 
-    const li = createLi(liOptions);
-    const img = createImage(imgOptions);
-    const h1 = createHeading(headingOptions);
-    const p = createParagraph(paragraphOptions);
-    const button = createButton(buttonOptions);
+  const li = createLi(liOptions);
+  const img = createImage(imgOptions);
+  const h1 = createHeading(headingOptions);
+  const p = createParagraph(paragraphOptions);
+  const button = createButton(buttonOptions);
 
-    img.addEventListener("error", () => {
-      img.parentNode.prepend(imageErrorHandler(user));
-      img.parentNode.removeChild(img);
-    });
-
-    li.append(img, h1, p, button);
-
-    return li;
-  } else {
+  if (user.firstName === "" || user.lastName === "") {
     return null;
   }
+
+  img.addEventListener("error", () => {
+    img.parentNode.prepend(imageErrorHandler(user));
+    img.remove();
+  });
+
+  li.append(img, h1, p, button);
+  return li;
 }
 
 function createLi({ className = "li" } = options) {
@@ -92,7 +91,8 @@ function createButton({ textContent = "More" } = options) {
 function imageErrorHandler(user) {
   const div = document.createElement("div");
   const span = document.createElement("span");
-  div.style.backgroundColor = "#" + randomBgColor();
+
+  div.style.backgroundColor = "#" + userColor(user);
   span.textContent = `${user.firstName[0]}${user.lastName[0]}`;
   div.classList.add("avatarImage", "avatarBackground");
   div.append(span);
@@ -119,4 +119,12 @@ function randomProfession() {
 function randomBgColor() {
   const randomColor = Math.floor(Math.random() * 16777215).toString(16);
   return randomColor;
+}
+
+function userColor(user) {
+  let color = `${user.firstName.length}${user.lastName.length}`;
+  while (color.length !== 6) {
+    color = color.concat("0");
+  }
+  return color;
 }
