@@ -50,6 +50,11 @@ function createUserCard(user) {
     img.remove();
   });
 
+  li.addEventListener("click", () => {
+    const title = document.getElementById("title");
+    title.textContent = `${user.firstName} ${user.lastName}`;
+  });
+
   li.append(img, h1, p, button);
   return li;
 }
