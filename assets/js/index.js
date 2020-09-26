@@ -1,5 +1,37 @@
 "use strict";
 
+const header = document.getElementById("header");
+header.classList.add("topBar");
+
+fetch("/auth.json")
+  .then((resp) => resp.json())
+  .then((loggedUser) => {
+    const imgOptions = {
+      src: loggedUser.profilePicture ?? "/assets/image/defaultUser.png",
+      className: "authUserPicture",
+    };
+
+    const fullName = {
+      tagName: "h2",
+      textContent: `${loggedUser.firstName} ${loggedUser.lastName}`,
+    };
+
+    const profession = {
+      tagName: "h6",
+      textContent: `> ${loggedUser.position} <`,
+    };
+
+    const userInfo = document.createElement("div");
+    userInfo.classList.add("userInfo");
+
+    const userPicture = createImage(imgOptions);
+    const h2 = createHeading(fullName);
+    const h6 = createHeading(profession);
+
+    userInfo.append(h2, h6);
+    header.append(userPicture, userInfo);
+  });
+
 fetch("/users.json")
   .then((resp) => resp.json())
   .then((users) => {
@@ -20,6 +52,7 @@ function createUserCard(user) {
 
   const imgOptions = {
     src: user.profilePicture ?? "/assets/image/defaultUser.png",
+    className: "avatarImage",
   };
 
   const headingOptions = {
@@ -65,9 +98,12 @@ function createLi({ className = "li" } = options) {
   return li;
 }
 
-function createImage({ src = "/assets/image/defaultUser.png" } = options) {
+function createImage({
+  src = "/assets/image/defaultUser.png",
+  className,
+} = options) {
   const img = document.createElement("img");
-  img.classList.add("avatarImage");
+  img.classList.add(className);
   img.src = src;
   return img;
 }
