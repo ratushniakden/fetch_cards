@@ -3,9 +3,11 @@
 const header = document.getElementById("header");
 header.classList.add("topBar");
 
-fetch("/auth.json")
-  .then((resp) => resp.json())
-  .then((loggedUser) => {
+(async function userAuth() {
+  try {
+    const response = await fetch("/auth.json");
+    const loggedUser = await response.json();
+
     const imgOptions = {
       src: loggedUser.profilePicture ?? "/assets/image/defaultUser.png",
       className: "authUserPicture",
@@ -30,11 +32,16 @@ fetch("/auth.json")
 
     userInfo.append(h2, h6);
     header.append(userPicture, userInfo);
-  });
+  } catch (e) {
+    console.log(e);
+  }
+})();
 
-fetch("/users.json")
-  .then((resp) => resp.json())
-  .then((users) => {
+(async function usersAuth() {
+  try {
+    const response = await fetch("/users.json");
+    const users = await response.json();
+
     const ul = document.getElementById("ul");
     const usersList = users.map((user) => createUserCard(user));
     ul.append(
@@ -42,8 +49,10 @@ fetch("/users.json")
         return e !== null;
       })
     );
-  })
-  .catch(console.error);
+  } catch (e) {
+    console.log(e);
+  }
+})();
 
 function createUserCard(user) {
   const liOptions = {
