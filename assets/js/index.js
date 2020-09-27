@@ -3,7 +3,10 @@
 const header = document.getElementById("header");
 header.classList.add("topBar");
 
-(async function userAuth() {
+document.addEventListener("DOMContentLoaded", userAuth);
+document.addEventListener("DOMContentLoaded", usersAuth);
+
+async function userAuth() {
   try {
     const response = await fetch("/auth.json");
     const loggedUser = await response.json();
@@ -35,9 +38,9 @@ header.classList.add("topBar");
   } catch (e) {
     console.log(e);
   }
-})();
+}
 
-(async function usersAuth() {
+async function usersAuth() {
   try {
     const response = await fetch("/users.json");
     const users = await response.json();
@@ -52,7 +55,7 @@ header.classList.add("topBar");
   } catch (e) {
     console.log(e);
   }
-})();
+}
 
 function createUserCard(user) {
   const liOptions = {
