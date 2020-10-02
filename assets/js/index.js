@@ -8,8 +8,16 @@ document.addEventListener("DOMContentLoaded", usersAuth);
 
 async function userAuth() {
   try {
-    const response = await fetch("/auth.json");
-    const loggedUser = await response.json();
+    const loggedUser = await getAuthUser();
+    localStorage.setItem("user", JSON.stringify(loggedUser));
+
+    async function getAuthUser() {
+      const store = localStorage.getItem("user");
+      if (store) {
+        return JSON.parse(store);
+      }
+      return new DataLoader("/auth.json").getData();
+    }
 
     const imgOptions = {
       src: loggedUser.profilePicture ?? "/assets/image/defaultUser.png",
@@ -42,18 +50,20 @@ async function userAuth() {
 
 async function usersAuth() {
   try {
-    const response = await fetch("/users.json");
-    const users = await response.json();
-
-    const ul = document.getElementById("ul");
-    const usersList = users.map((user) => createUserCard(user));
-    ul.append(
-      ...usersList.filter(function (e) {
-        return e !== null;
-      })
-    );
+    if (localStorage.getItem("user")) {
+      const users = await new DataLoader("/users.json").getData();
+      const ul = document.getElementById("ul");
+      const usersList = users.map((user) => createUserCard(user));
+      ul.append(
+        ...usersList.filter(function (e) {
+          return e !== null;
+        })
+      );
+    } else {
+      throw new Error("Authentication error!");
+    }
   } catch (e) {
-    console.log(e);
+    console.error(e);
   }
 }
 
@@ -98,6 +108,7 @@ function createUserCard(user) {
   li.addEventListener("click", () => {
     const title = document.getElementById("title");
     title.textContent = `${user.firstName} ${user.lastName}`;
+    history.pushState(null, null, `?id=${user.id}`);
   });
 
   li.append(img, h1, p, button);
@@ -180,4 +191,15 @@ function userColor(user) {
     color = color.concat("0");
   }
   return color;
+}
+
+class DataLoader {
+  constructor(url) {
+    this._url = url;
+  }
+
+  async getData() {
+    const response = await fetch(this._url);
+    return response.json();
+  }
 }
