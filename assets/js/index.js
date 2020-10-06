@@ -16,7 +16,7 @@ async function userAuth() {
       if (store) {
         return JSON.parse(store);
       }
-      return new DataLoader("/auth.json").getData();
+      return DataLoader.fetch("../../auth.json", "json");
     }
 
     const imgOptions = {
@@ -51,7 +51,7 @@ async function userAuth() {
 async function usersAuth() {
   try {
     if (localStorage.getItem("user")) {
-      const users = await new DataLoader("/users.json").getData();
+      const users = await DataLoader.fetch("../../users.json", "json");
       const ul = document.getElementById("ul");
       const usersList = users.map((user) => createUserCard(user));
       ul.append(
@@ -60,7 +60,7 @@ async function usersAuth() {
         })
       );
     } else {
-      throw new Error("Authentication error!");
+      alert("Authentication error.\nPress 'OK' and reload the page.");
     }
   } catch (e) {
     console.error(e);
@@ -194,12 +194,14 @@ function userColor(user) {
 }
 
 class DataLoader {
-  constructor(url) {
+  constructor(url, method) {
     this._url = url;
+    this._method = method;
   }
 
-  async getData() {
-    const response = await fetch(this._url);
-    return response.json();
+  static async fetch(url, method) {
+    const response = await fetch(url);
+    const data = await response[method]();
+    return data;
   }
 }
